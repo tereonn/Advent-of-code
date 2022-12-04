@@ -30,13 +30,14 @@ fn parse_cals(file_path: &str) -> Result<Vec<u32>, String> {
                 .collect::<Vec<_>>())
         })
 }
+
 #[cfg(test)]
 mod d1_tests {
     use super::*;
 
     #[test]
     fn test_first() {
-        let res = do_first_part("./src/test.txt");
+        let res = do_first_part("./src/d1/test.txt");
 
         assert!(res.is_ok());
         assert_eq!(res.unwrap(), 24000);
@@ -44,7 +45,7 @@ mod d1_tests {
 
     #[test]
     fn test_sec() {
-        let res = do_sec_part("./src/test.txt");
+        let res = do_sec_part("./src/d1/test.txt");
 
         assert!(res.is_ok());
         assert_eq!(res.unwrap(), 45000);
