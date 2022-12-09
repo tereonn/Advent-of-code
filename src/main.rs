@@ -1,23 +1,16 @@
 use solutions::{d1, d2, d3, d4, d5};
-
+macro_rules! add_day {
+    ($a:ident,$b:tt) => {
+        let path = format!("./data/{}.txt", $b);
+        let fp = $a::do_first_part(&path);
+        let sp = $a::do_sec_part(&path);
+        println!("{}:\n\tp1: {}\n\tp2: {}", $b, fp, sp);
+    };
+}
 fn main() {
-    let fp = d1::do_first_part("./data/d1.txt").unwrap();
-    let sp = d1::do_sec_part("./data/d1.txt").unwrap();
-    println!("D1:\n\tp1: {}\n\tp2: {}", fp, sp);
-
-    let fp = d2::do_first_part("./data/d2.txt");
-    let sp = d2::do_sec_part("./data/d2.txt");
-    println!("D2:\n\tp1: {}\n\tp2: {}", fp, sp);
-
-    let fp = d3::do_first_part("./data/d3.txt");
-    let sp = d3::do_sec_part("./data/d3.txt");
-    println!("D3:\n\tp1: {}\n\tp2: {}", fp, sp);
-
-    let fp = d4::do_first_part("./data/d4.txt");
-    let sp = d4::do_sec_part("./data/d4.txt");
-    println!("D4:\n\tp1: {}\n\tp2: {}", fp, sp);
-
-    let fp = d5::do_first_part("./data/d5.txt");
-    let sp = d5::do_sec_part("./data/d5.txt");
-    println!("D5:\n\tp1: {}\n\tp2: {}", fp, sp);
+    add_day!(d1, "d1");
+    add_day!(d2, "d2");
+    add_day!(d3, "d3");
+    add_day!(d4, "d4");
+    add_day!(d5, "d5");
 }
