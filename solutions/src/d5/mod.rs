@@ -1,4 +1,4 @@
-use std::fs::read_to_string;
+use std::{fs::read_to_string, sync::RwLock};
 
 #[derive(Debug)]
 struct Move {
@@ -11,7 +11,7 @@ impl Move {
         Self { count, from, to }
     }
 }
-type StockpileStack = Vec<char>;
+type StockpileStack = RwLock<Vec<char>>;
 
 fn parse(file_path: &str) -> (Vec<StockpileStack>, Vec<Move>) {
     let file = read_to_string(file_path).unwrap();
@@ -33,13 +33,13 @@ fn parse_stock(raw: &str) -> Vec<StockpileStack> {
     let mut result: Vec<StockpileStack> = Vec::with_capacity(stack_num);
 
     for _ in 0..stack_num {
-        result.push(Vec::with_capacity(max_height));
+        result.push(RwLock::new(Vec::with_capacity(max_height)));
     }
 
     while let Some(row) = by_rows.pop() {
         for (idx, sym) in row.into_iter().enumerate() {
             if sym != ' ' {
-                result[idx].push(sym);
+                result[idx].write().unwrap().push(sym);
             }
         }
     }
@@ -68,39 +68,39 @@ fn parse_commands(raw: &str) -> Vec<Move> {
 }
 
 pub fn do_first_part(file_path: &str) -> String {
-    let (mut stock, cmds) = parse(file_path);
+    let (stock, cmds) = parse(file_path);
     for cmd in cmds {
-        let target_len = stock[cmd.from - 1].len();
+        if cmd.from != cmd.to {
+            let target_len = { stock[cmd.from - 1].read().unwrap().len() };
 
-        let mut moved = stock[cmd.from - 1]
-            .drain(target_len - cmd.count..)
-            .rev()
-            .collect::<Vec<_>>();
+            let mut from_write = stock[cmd.from - 1].write().unwrap();
+            let moved = from_write.drain(target_len - cmd.count..).rev();
 
-        stock[cmd.to - 1].append(&mut moved);
+            stock[cmd.to - 1].write().unwrap().extend(moved)
+        }
     }
     stock
         .iter()
-        .map(|c| c.iter().rev().next())
+        .map(|c| c.read().unwrap().iter().rev().next().map(|c| c.clone()))
         .filter_map(|c| c)
         .collect::<String>()
 }
 
 pub fn do_sec_part(file_path: &str) -> String {
-    let (mut stock, cmds) = parse(file_path);
+    let (stock, cmds) = parse(file_path);
     for cmd in cmds {
-        let target_len = stock[cmd.from - 1].len();
+        if cmd.from != cmd.to {
+            let target_len = { stock[cmd.from - 1].read().unwrap().len() };
 
-        let mut moved = stock[cmd.from - 1]
-            .drain(target_len - cmd.count..)
-            .collect::<Vec<_>>();
+            let mut from_write = stock[cmd.from - 1].write().unwrap();
+            let moved = from_write.drain(target_len - cmd.count..);
 
-        stock[cmd.to - 1].append(&mut moved);
+            stock[cmd.to - 1].write().unwrap().extend(moved)
+        }
     }
-
     stock
         .iter()
-        .map(|c| c.iter().rev().next())
+        .map(|c| c.read().unwrap().iter().rev().next().map(|c| c.clone()))
         .filter_map(|c| c)
         .collect::<String>()
 }
