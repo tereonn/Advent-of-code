@@ -1,4 +1,4 @@
-use solutions::{d1, d2, d3, d4};
+use solutions::{d1, d2, d3, d4, d5};
 
 fn main() {
     let fp = d1::do_first_part("./data/d1.txt").unwrap();
@@ -15,5 +15,9 @@ fn main() {
 
     let fp = d4::do_first_part("./data/d4.txt");
     let sp = d4::do_sec_part("./data/d4.txt");
-    println!("D3:\n\tp1: {}\n\tp2: {}", fp, sp);
+    println!("D4:\n\tp1: {}\n\tp2: {}", fp, sp);
+
+    let fp = d5::do_first_part("./data/d5.txt");
+    let sp = d5::do_sec_part("./data/d5.txt");
+    println!("D5:\n\tp1: {}\n\tp2: {}", fp, sp);
 }
