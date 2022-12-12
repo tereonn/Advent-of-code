@@ -15,4 +15,5 @@ fn main() {
     add_day!(d4, "d4");
     add_day!(d5, "d5");
     add_day!(d6, "d6");
+    add_day!(d7, "d7");
 }
