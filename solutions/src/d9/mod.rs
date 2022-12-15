@@ -173,7 +173,7 @@ impl FromStr for Direction {
 }
 
 #[cfg(test)]
-mod d8_test {
+mod d9_test {
     use super::*;
 
     #[test]

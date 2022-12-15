@@ -121,7 +121,7 @@ pub fn do_sec_part(fpath: &str) -> String {
 }
 
 #[cfg(test)]
-mod d8_test {
+mod d10_test {
     use std::fs::read_to_string;
 
     use super::*;
